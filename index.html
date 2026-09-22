@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>A Special Day Is Coming... ❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            800: '#9f1239',
+                            900: '#881337',
+                            950: '#4c0519',
+                        },
+                        gold: {
+                            200: '#fef08a',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        cursive: ['Great Vibes', 'cursive'],
+                        hand: ['Caveat', 'cursive'],
+                        sans: ['Poppins', 'Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* iOS Safe Area & Full Height Reset */
+        html, body {
+            height: 100%;
+            height: -webkit-fill-available;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background: #0d0414;
+            color: #ffffff;
+        }
+
+        /* Glassmorphism Styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-modal {
+            background: rgba(20, 8, 30, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+        }
+
+        /* Ambient Glow Background */
+        .ambient-bg {
+            background: radial-gradient(circle at 50% 15%, #581c3f 0%, #25091e 50%, #0b020f 100%);
+        }
+
+        /* Floating Balloon Animations */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) rotate(0deg) scale(0.85);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.85;
+            }
+            90% {
+                opacity: 0.85;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(8deg) scale(1.05);
+                opacity: 0;
+            }
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp 15s infinite ease-in-out;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
+        }
+
+        /* Soft Pulse Glow */
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(244, 63, 94, 0.4), 0 0 40px rgba(244, 63, 94, 0.2);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 0 35px rgba(244, 63, 94, 0.7), 0 0 60px rgba(244, 63, 94, 0.4);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        /* Twinkling Background Stars */
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: starTwinkle 3s infinite ease-in-out;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(244, 63, 94, 0.5);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="ambient-bg min-h-screen flex flex-col justify-between items-center text-rose-50 selection:bg-rose-500 selection:text-white relative font-sans">
+
+    <!-- Floating Balloons & Stars Layer -->
+    <div id="balloon-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
+    <div id="stars-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+    <!-- Top Music Controls -->
+    <div class="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <button id="musicToggleBtn" onclick="toggleAudio()" class="glass-card px-4 py-2.5 rounded-full flex items-center gap-2 text-xs font-semibold tracking-wider text-rose-200 hover:text-white transition-all shadow-lg active:scale-95 border-rose-400/30">
+            <i id="musicIcon" class="fas fa-music text-rose-400 animate-pulse"></i>
+            <span id="musicText">Soothing Music</span>
+        </button>
+
+        <label for="customAudioInput" class="glass-card w-10 h-10 rounded-full flex items-center justify-center text-rose-300 hover:text-white cursor-pointer transition-all active:scale-95 border-rose-400/30" title="Upload Custom Music">
+            <i class="fas fa-upload text-xs"></i>
+            <input type="file" id="customAudioInput" accept="audio/*" class="hidden" onchange="handleCustomAudio(event)">
+        </label>
+        <audio id="bgAudioPlayer" loop class="hidden"></audio>
+    </div>
+
+    <!-- Header Title -->
+    <header class="w-full max-w-md pt-8 px-6 text-center z-10">
+        <h1 class="font-cursive text-4xl sm:text-5xl text-rose-300 drop-shadow-[0_2px_12px_rgba(244,63,94,0.6)] tracking-wide">
+            My Forever Love, Simran ❤️
+        </h1>
+    </header>
+
+    <main class="w-full max-w-md px-5 my-auto py-6 z-10 flex flex-col items-center">
+
+        <!-- STEP 1: WELCOME & PROMPT CARD -->
+        <div id="step1Card" class="w-full glass-card rounded-3xl p-7 text-center transition-all duration-700 transform scale-100 opacity-100 flex flex-col items-center border-rose-400/20">
+            <div class="w-16 h-16 mb-5 rounded-full bg-rose-500/20 flex items-center justify-center border border-rose-400/40 text-rose-300 text-2xl animate-bounce">
+                ✨
+            </div>
+            <h2 class="font-serif text-2xl sm:text-3xl font-semibold text-white mb-3 leading-snug">
+                A special day is coming for my dearest Simran...
+            </h2>
+            <p class="text-rose-200/90 text-sm sm:text-base font-light mb-6 leading-relaxed">
+                Do you want to know about it, Simran?
+            </p>
+            <button onclick="goToStep2()" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-rose-600 via-rose-500 to-pink-500 text-white font-semibold text-base shadow-lg shadow-rose-900/50 hover:shadow-rose-600/50 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 pulse-glow border border-rose-300/30">
+                <span>Click Here Simran ❤️</span>
+                <i class="fas fa-sparkles text-gold-300"></i>
+            </button>
+        </div>
+
+        <!-- STEP 2: ROMANTIC MESSAGE & COUNTDOWN DISPLAY -->
+        <div id="step2Content" class="w-full hidden opacity-0 transform translate-y-6 transition-all duration-1000 flex flex-col gap-6">
+
+            <!-- Romantic Message Box -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden border-rose-400/30">
+                <div class="absolute -top-6 -right-6 text-7xl text-rose-500/10 font-cursive select-none">Simran</div>
+                
+                <p class="font-serif text-base sm:text-lg leading-relaxed text-rose-100 italic mb-4">
+                    "Your birthday will always be special to me, Simran, because it is the day the most beautiful person in my life came into this world. ❤️"
+                </p>
+                <p class="font-serif text-base sm:text-lg leading-relaxed text-rose-200/90 italic mb-5">
+                    "I’m grateful for the day you were born, Simran, and even more grateful that life brought you to me."
+                </p>
+                <div class="w-16 h-0.5 bg-gradient-to-r from-transparent via-rose-400 to-transparent mx-auto my-4"></div>
+                <p class="font-hand text-xl sm:text-2xl text-rose-300 font-semibold tracking-wide">
+                    So now, let’s count every little moment until your special day, Simran… ✨
+                </p>
+            </div>
+
+            <!-- Live Timer Card -->
+            <div id="countdownBox" class="glass-card rounded-3xl p-6 text-center border-rose-500/30">
+                <h3 class="text-xs uppercase tracking-widest text-rose-300 font-semibold mb-5 flex items-center justify-center gap-2">
+                    <i class="far fa-clock text-rose-400"></i> Countdown To Simran's Birthday (October 2nd)
+                </h3>
+
+                <!-- Timer Numbers -->
+                <div class="grid grid-cols-4 gap-2 sm:gap-3 mb-2">
+                    <div class="bg-rose-950/50 rounded-2xl p-3 border border-rose-500/20 flex flex-col items-center">
+                        <span id="days" class="font-serif text-2xl sm:text-3xl font-bold text-white">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-rose-300/70 mt-1">Days</span>
+                    </div>
+                    <div class="bg-rose-950/50 rounded-2xl p-3 border border-rose-500/20 flex flex-col items-center">
+                        <span id="hours" class="font-serif text-2xl sm:text-3xl font-bold text-white">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-rose-300/70 mt-1">Hours</span>
+                    </div>
+                    <div class="bg-rose-950/50 rounded-2xl p-3 border border-rose-500/20 flex flex-col items-center">
+                        <span id="minutes" class="font-serif text-2xl sm:text-3xl font-bold text-white">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-rose-300/70 mt-1">Mins</span>
+                    </div>
+                    <div class="bg-rose-950/50 rounded-2xl p-3 border border-rose-500/20 flex flex-col items-center">
+                        <span id="seconds" class="font-serif text-2xl sm:text-3xl font-bold text-rose-400">00</span>
+                        <span class="text-[10px] uppercase tracking-wider text-rose-300/70 mt-1">Secs</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SPECIAL REVEAL BUTTON (Revealed on/after Oct 2nd) -->
+            <div id="specialNoteContainer" class="hidden transform transition-all duration-500 scale-95">
+                <button onclick="openSpecialNoteModal()" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-gold-500 text-white font-bold text-lg shadow-xl shadow-amber-900/40 hover:shadow-gold-500/50 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3 border border-gold-300/50 pulse-glow">
+                    <i class="fas fa-envelope-open-text text-gold-200 text-xl"></i>
+                    <span>Special Note For You 💌</span>
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer WhatsApp Share Helper -->
+    <footer class="w-full max-w-md pb-8 px-6 text-center z-10">
+        <button onclick="copyOrShareLink()" class="glass-card px-5 py-2.5 rounded-full inline-flex items-center gap-2 text-xs text-rose-200 hover:text-white transition-all active:scale-95 border-rose-400/20">
+            <i class="fab fa-whatsapp text-emerald-400 text-base"></i>
+            <span id="shareText">Share This Web Page With Her</span>
+        </button>
+    </footer>
+
+    <!-- SPECIAL REVEAL & MEMORIES MODAL -->
+    <div id="specialModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-500 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="w-full max-w-md max-h-[85vh] glass-modal rounded-3xl p-6 overflow-y-auto relative text-left border border-rose-500/40 shadow-2xl flex flex-col gap-6">
+            
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-rose-500/20 pb-4">
+                <h3 class="font-serif text-2xl text-rose-300 font-bold flex items-center gap-2">
+                    <span>🎉 Happy Birthday Simran!</span>
+                </h3>
+                <button onclick="closeSpecialNoteModal()" class="w-8 h-8 rounded-full bg-rose-900/50 text-rose-200 flex items-center justify-center hover:bg-rose-800 transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Letter Note Section -->
+            <div class="space-y-3">
+                <h4 class="font-cursive text-2xl text-gold-300">My Dearest Simran,</h4>
+                
+                <div class="text-rose-100 text-sm leading-relaxed space-y-3 font-light bg-rose-950/40 p-4 rounded-2xl border border-rose-500/20">
+                    <p>
+                        Happy Birthday, Simran! 🎂 Today is dedicated to celebrating the remarkable, beautiful, and warm-hearted person you are.
+                    </p>
+                    <p>
+                        Every day spent with you is a memory I cherish forever. Thank you for filling my life with happiness and light. I love you endlessly, Simran! ❤️
+                    </p>
+                </div>
+            </div>
+
+            <!-- Photo Memories Grid -->
+            <div class="space-y-3">
+                <h4 class="text-xs uppercase tracking-widest text-rose-300 font-semibold flex items-center gap-2">
+                    <i class="fas fa-images text-rose-400"></i> Our Favorite Moments
+                </h4>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="relative group rounded-xl overflow-hidden aspect-square bg-rose-950/50 border border-rose-500/30">
+                        <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=500&q=80" alt="Moment 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/881337/ffffff?text=Our+Photo+1'">
+                    </div>
+
+                    <div class="relative group rounded-xl overflow-hidden aspect-square bg-rose-950/50 border border-rose-500/30">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=500&q=80" alt="Moment 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/881337/ffffff?text=Our+Photo+2'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Memory Card -->
+            <div class="space-y-3">
+                <h4 class="text-xs uppercase tracking-widest text-rose-300 font-semibold flex items-center gap-2">
+                    <i class="fas fa-video text-rose-400"></i> Cherished Video Memories
+                </h4>
+                
+                <div class="rounded-2xl overflow-hidden border border-rose-500/30 bg-black aspect-video relative">
+                    <video controls preload="metadata" class="w-full h-full object-cover" poster="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=600&q=80">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-romantic-couple-looking-at-each-other-41527-large.mp4" type="video/mp4">
+                        Your browser does not support HTML video.
+                    </video>
+                </div>
+            </div>
+
+            <!-- Close Modal Button -->
+            <button onclick="closeSpecialNoteModal()" class="w-full py-3 rounded-xl bg-rose-600/30 hover:bg-rose-600/50 text-rose-200 text-sm font-medium transition-all text-center mt-2 border border-rose-500/30">
+                Close Memory Box ✨
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* 1. STARRY BACKGROUND GENERATOR */
+        function generateStars() {
+            const starsContainer = document.getElementById('stars-container');
+            const count = 35;
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDelay = (Math.random() * 3) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        generateStars();
+
+        /* 2. FLOATING BALLOONS GENERATOR */
+        const balloonContainer = document.getElementById('balloon-container');
+        const balloonColors = ['#f43f5e', '#fb7185', '#fda4af', '#e11d48', '#facc15', '#ec4899'];
+
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            
+            const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+            const size = Math.floor(Math.random() * 20) + 38;
+            const left = Math.random() * 95;
+            const duration = Math.random() * 6 + 12;
+
+            balloon.style.left = left + 'vw';
+            balloon.style.animationDuration = duration + 's';
+
+            balloon.innerHTML = `
+                <svg width="${size}" height="${size * 1.2}" viewBox="0 0 50 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 0C11.19 0 0 11.19 0 25C0 38.81 11.19 45 25 45C38.81 45 50 38.81 50 25C50 11.19 38.81 0 25 0Z" fill="${color}" fill-opacity="0.75"/>
+                    <path d="M25 45L22 50H28L25 45Z" fill="${color}"/>
+                    <path d="M25 50C25 55 23 58 25 60" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+                    <ellipse cx="16" cy="14" rx="4" ry="7" transform="rotate(-30 16 14)" fill="white" fill-opacity="0.35"/>
+                </svg>
+            `;
+
+            balloonContainer.appendChild(balloon);
+            setTimeout(() => balloon.remove(), duration * 1000);
+        }
+
+        setInterval(createBalloon, 2000);
+        for(let i = 0; i < 6; i++) createBalloon();
+
+        /* 3. STEP FLOW LOGIC */
+        function goToStep2() {
+            const step1 = document.getElementById('step1Card');
+            const step2 = document.getElementById('step2Content');
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 },
+                    colors: ['#f43f5e', '#fda4af', '#facc15']
+                });
+            }
+
+            startAudio();
+
+            step1.classList.add('opacity-0', 'scale-95', '-translate-y-4');
+            setTimeout(() => {
+                step1.classList.add('hidden');
+                step2.classList.remove('hidden');
+                setTimeout(() => {
+                    step2.classList.remove('opacity-0', 'translate-y-6');
+                }, 50);
+            }, 500);
+        }
+
+        /* 4. COUNTDOWN CALCULATOR FOR OCTOBER 2 */
+        function updateCountdown() {
+            const now = new Date();
+            let currentYear = now.getFullYear();
+
+            // Target: October 2nd 00:00:00 (Month index 9)
+            let targetDate = new Date(currentYear, 9, 2, 0, 0, 0);
+
+            // If past Oct 2 11:59:59 PM of current year, calculate for next year
+            const dayAfterTarget = new Date(currentYear, 9, 3, 0, 0, 0);
+            if (now >= dayAfterTarget) {
+                targetDate = new Date(currentYear + 1, 9, 2, 0, 0, 0);
+            }
+
+            const diffMs = targetDate - now;
+            const specialNoteBtn = document.getElementById('specialNoteContainer');
+
+            // On October 2nd OR when timer hits 0
+            if ((now.getMonth() === 9 && now.getDate() === 2) || diffMs <= 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+
+                specialNoteBtn.classList.remove('hidden');
+                setTimeout(() => {
+                    specialNoteBtn.classList.remove('scale-95');
+                    specialNoteBtn.classList.add('scale-100');
+                }, 50);
+
+                if (!window.hasCelebrated) {
+                    window.hasCelebrated = true;
+                    triggerBirthdayCelebration();
+                }
+                return;
+            }
+
+            const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diffMs / 1000 / 60) % 60);
+            const seconds = Math.floor((diffMs / 1000) % 60);
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        /* 5. CELEBRATION & MODALS */
+        function triggerBirthdayCelebration() {
+            if (typeof confetti === 'function') {
+                const duration = 4 * 1000;
+                const animationEnd = Date.now() + duration;
+                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+                const interval = setInterval(function() {
+                    const timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) return clearInterval(interval);
+                    const particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                }, 250);
+            }
+        }
+
+        function openSpecialNoteModal() {
+            const modal = document.getElementById('specialModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 50);
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        function closeSpecialNoteModal() {
+            const modal = document.getElementById('specialModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 500);
+        }
+
+        /* 6. WHATSAPP & CLIPBOARD HELPER */
+        function copyOrShareLink() {
+            const currentUrl = window.location.href;
+            const text = "A special day is coming for me and I can't wait to celebrate it... ❤️ " + currentUrl;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'A Special Day Is Coming...',
+                    text: "A special day is coming for me and I can't wait to celebrate it... ❤️",
+                    url: currentUrl
+                }).catch(() => {});
+            } else {
+                try {
+                    document.execCommand('copy');
+                } catch(e) {}
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+            }
+        }
+
+        /* 7. AMBIENT AUDIO SYNTHESIZER */
+        let audioCtx = null;
+        let isPlayingAudio = false;
+        let audioInterval = null;
+        let usingCustomAudio = false;
+
+        function startAudio() {
+            if (isPlayingAudio) return;
+
+            if (usingCustomAudio) {
+                const player = document.getElementById('bgAudioPlayer');
+                player.play().then(() => {
+                    isPlayingAudio = true;
+                    document.getElementById('musicText').innerText = "Playing Custom 🎶";
+                    document.getElementById('musicIcon').className = "fas fa-volume-up text-emerald-400 animate-pulse";
+                }).catch(e => console.log(e));
+                return;
+            }
+
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!audioCtx) audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                isPlayingAudio = true;
+                document.getElementById('musicText').innerText = "Soothing Music 🎶";
+                document.getElementById('musicIcon').className = "fas fa-volume-up text-emerald-400 animate-pulse";
+
+                const notes = [261.63, 329.63, 392.00, 493.88, 523.25, 440.00, 349.23, 392.00];
+                let noteIdx = 0;
+
+                audioInterval = setInterval(() => {
+                    if (!isPlayingAudio || usingCustomAudio) return;
+                    
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(notes[noteIdx], audioCtx.currentTime);
+                    
+                    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.07, audioCtx.currentTime + 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 1.9);
+
+                    noteIdx = (noteIdx + 1) % notes.length;
+                }, 1200);
+
+            } catch (e) {
+                console.log("Audio exception:", e);
+            }
+        }
+
+        function toggleAudio() {
+            if (isPlayingAudio) {
+                isPlayingAudio = false;
+                if (audioInterval) clearInterval(audioInterval);
+                if (usingCustomAudio) document.getElementById('bgAudioPlayer').pause();
+                document.getElementById('musicText').innerText = "Soothing Music";
+                document.getElementById('musicIcon').className = "fas fa-music text-rose-400";
+            } else {
+                startAudio();
+            }
+        }
+
+        function handleCustomAudio(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                const player = document.getElementById('bgAudioPlayer');
+                player.src = url;
+                usingCustomAudio = true;
+                if (audioInterval) clearInterval(audioInterval);
+                startAudio();
+            }
+        }
+
+        // iPhone / Safari user gesture audio unlock
+        const unlockAudio = () => {
+            startAudio();
+            document.removeEventListener('touchstart', unlockAudio);
+            document.removeEventListener('click', unlockAudio);
+        };
+        document.addEventListener('touchstart', unlockAudio, { passive: true });
+        document.addEventListener('click', unlockAudio);
+    </script>
+</body>
+</html>
