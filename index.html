@@ -165,13 +165,12 @@
     <div id="stars-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0"></div>
 
     <!-- Top Music Controls -->
-    <div class="fixed top-4 right-4 z-50 flex items-center gap-2">
-        <button id="musicToggleBtn" onclick="toggleAudio()" class="glass-card px-4 py-2.5 rounded-full flex items-center gap-2 text-xs font-semibold tracking-wider text-rose-200 hover:text-white transition-all shadow-lg active:scale-95 border-rose-400/30">
-            <i id="musicIcon" class="fas fa-music text-rose-400 animate-pulse"></i>
-            <span id="musicText">Soothing Music</span>
+    <div class="fixed top-3 right-3 sm:top-4 sm:right-4 z-50 flex items-center gap-1.5 sm:gap-2">
+        <button id="musicToggleBtn" onclick="toggleAudio()" class="glass-card w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-rose-200 hover:text-white transition-all shadow-lg active:scale-95 border-rose-400/30" title="Toggle Music">
+            <i id="musicIcon" class="fas fa-music text-rose-400 animate-pulse text-sm"></i>
         </button>
 
-        <label for="customAudioInput" class="glass-card w-10 h-10 rounded-full flex items-center justify-center text-rose-300 hover:text-white cursor-pointer transition-all active:scale-95 border-rose-400/30" title="Upload Custom Music">
+        <label for="customAudioInput" class="glass-card w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-rose-300 hover:text-white cursor-pointer transition-all active:scale-95 border-rose-400/30" title="Upload Custom Music">
             <i class="fas fa-upload text-xs"></i>
             <input type="file" id="customAudioInput" accept="audio/*" class="hidden" onchange="handleCustomAudio(event)">
         </label>
@@ -179,8 +178,8 @@
     </div>
 
     <!-- Header Title -->
-    <header class="w-full max-w-md pt-8 px-6 text-center z-10">
-        <h1 class="font-cursive text-4xl sm:text-5xl text-rose-300 drop-shadow-[0_2px_12px_rgba(244,63,94,0.6)] tracking-wide">
+    <header class="w-full max-w-md pt-16 sm:pt-14 px-6 text-center z-10">
+        <h1 class="font-cursive text-3xl sm:text-5xl text-rose-300 drop-shadow-[0_2px_12px_rgba(244,63,94,0.6)] tracking-wide leading-tight">
             My Forever Love, Simran ❤️
         </h1>
     </header>
@@ -532,7 +531,6 @@
                 const player = document.getElementById('bgAudioPlayer');
                 player.play().then(() => {
                     isPlayingAudio = true;
-                    document.getElementById('musicText').innerText = "Playing Custom 🎶";
                     document.getElementById('musicIcon').className = "fas fa-volume-up text-emerald-400 animate-pulse";
                 }).catch(e => console.log(e));
                 return;
@@ -544,7 +542,6 @@
                 if (audioCtx.state === 'suspended') audioCtx.resume();
 
                 isPlayingAudio = true;
-                document.getElementById('musicText').innerText = "Soothing Music 🎶";
                 document.getElementById('musicIcon').className = "fas fa-volume-up text-emerald-400 animate-pulse";
 
                 const notes = [261.63, 329.63, 392.00, 493.88, 523.25, 440.00, 349.23, 392.00];
@@ -582,7 +579,6 @@
                 isPlayingAudio = false;
                 if (audioInterval) clearInterval(audioInterval);
                 if (usingCustomAudio) document.getElementById('bgAudioPlayer').pause();
-                document.getElementById('musicText').innerText = "Soothing Music";
                 document.getElementById('musicIcon').className = "fas fa-music text-rose-400";
             } else {
                 startAudio();
